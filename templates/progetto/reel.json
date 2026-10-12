@@ -1,0 +1,23 @@
+{
+  "source": "/percorso/del/girato.MOV",
+  "language": "it",
+  "stutter_prompt": "Ehm... cioè, eh, ci- ci sta, mmh, insomma, no, cioè noi, noi...",
+  "cover": { "lines": ["Il titolo", "del reel?"], "accent": "titolo" },
+  "spans": [
+    ["P01", 0.80, 11.30, "gancio"],
+    ["P02", 29.00, 35.20, "seconda frase"]
+  ],
+  "segments": [
+    ["S01", "split", "P01.0", "gancio"],
+    ["S02", "cam", "P02.0", "chiusura"]
+  ],
+  "subs": {
+    "fix": {},
+    "keywords": [],
+    "pairs": [],
+    "keep_caps": ["AI"],
+    "skip_segments": []
+  },
+  "music": null,
+  "riser_at": null
+}

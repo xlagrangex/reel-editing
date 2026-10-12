@@ -1,0 +1,7 @@
+numpy
+scipy
+soundfile
+pyloudnorm
+pillow
+opencv-python-headless
+mlx-whisper

@@ -1,0 +1,92 @@
+@import url("fonts.css");
+
+:root {
+  /* tema bianco + blu: fondo bianco, inchiostro blu notte, Plus Jakarta Sans, gradiente blu -> azzurro */
+  --font: "Plus Jakarta Sans", sans-serif;
+  --bg-mid: #ffffff;
+  --bg-edge: #f2f6fc;
+  --card: #ffffff;
+  --line: rgba(12, 31, 63, 0.08);
+  --line-strong: rgba(12, 31, 63, 0.12);
+  --rim: rgba(12, 31, 63, 0.08);
+  --text: #0c1f3f;
+  --text-2: rgba(12, 31, 63, 0.58);
+  --accent: #1b6bff;
+  --accent-hi: #2aa9f5;
+  --grad: linear-gradient(135deg, #0a3fd6, #1b74ff 50%, #2aa9f5);
+  --band: rgba(27, 107, 255, 0.10);
+  --ok: #16a34a;
+  --stamp: #e5383b;
+  --shadow: 0 40px 80px rgba(12, 40, 100, 0.10), 0 12px 28px rgba(12, 40, 100, 0.08), 0 2px 6px rgba(0, 0, 0, 0.05);
+  --glow: 0 0 80px rgba(27, 116, 255, 0.14);
+  --r-card: 32px;
+  --r-doc: 40px;
+  --r-tile: 72px;
+  --r-phone: 84px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #fff; }
+body { font-family: var(--font); color: var(--text); -webkit-font-smoothing: antialiased; word-spacing: 0.06em; }
+
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+
+.bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 40% at 88% 4%, rgba(42, 169, 245, 0.14), rgba(42, 169, 245, 0) 70%),
+    radial-gradient(ellipse 80% 45% at 10% 100%, rgba(27, 107, 255, 0.10), rgba(27, 107, 255, 0) 70%),
+    radial-gradient(ellipse 80% 70% at 50% 36%, var(--bg-mid) 0%, var(--bg-edge) 80%);
+}
+
+/* camera: tutto ciò che vive nel mondo si muove dentro #world */
+#world { position: absolute; inset: 0; transform-origin: 540px 700px; will-change: transform; }
+
+/* nello split il contenuto sta in y 40..900; il mondo sfuma da 900 su 160 px (la maschera sta su un wrapper fermo) */
+.split .world-mask {
+  -webkit-mask-image: linear-gradient(#000 0, #000 900px, transparent 1060px);
+          mask-image: linear-gradient(#000 0, #000 900px, transparent 1060px);
+}
+
+.card {
+  position: absolute;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top-color: var(--rim);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow);
+}
+.card.hero { box-shadow: var(--shadow), var(--glow); }
+.doc { border-radius: var(--r-doc); }
+.tile { border-radius: var(--r-tile); }
+.phone { border-radius: var(--r-phone); }
+
+.h1 { font-family: var(--font); font-weight: 800; font-size: 96px; line-height: 1.04; letter-spacing: -0.025em; }
+.h2 { font-family: var(--font); font-weight: 700; font-size: 52px; line-height: 1.12; letter-spacing: -0.015em; }
+.body { font-family: var(--font); font-weight: 400; font-size: 30px; line-height: 1.38; color: var(--text-2); }
+.accent { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.band { background: var(--band); border-radius: 10px; padding: 0 10px; }
+
+/* cattura vera: cornice nitida sopra un suo clone sfocato e schiarito */
+.cap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+.cap-bed { position: absolute; inset: -80px; overflow: hidden; }
+.cap-page-bed { position: absolute; left: 0; top: 0; transform-origin: 0 0; filter: blur(40px) saturate(0.8); }
+.cap-page-bed img, .cap-page img { display: block; width: 100%; }
+.cap-bed::after { content: ""; position: absolute; inset: 0; background: rgba(255, 255, 255, 0.78); }
+.cap-frame {
+  position: absolute; overflow: hidden;
+  border-radius: 36px; border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow); background: #fff;
+}
+.cap-page { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.cap-hl { position: absolute; background: rgba(27, 107, 255, 0.12); border: 3px solid var(--accent); border-radius: 12px; }
+
+/* overlay leggeri sul volto pieno: piccoli, mai sopra la faccia */
+.chip {
+  position: absolute; display: flex; align-items: center; gap: 18px;
+  padding: 22px 34px; border-radius: 999px; background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow); font-family: var(--font); font-weight: 800; font-size: 44px; letter-spacing: -0.01em; color: var(--text);
+}
+
+/* filtro neutro esplicito: GSAP interpola blur/brightness da valori veri, non da "none" */
+.card, .row, .tile, .chip { filter: blur(0px) brightness(1); }

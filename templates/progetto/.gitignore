@@ -1,0 +1,16 @@
+# a reel project: keep scripts and reel.json, not the media
+.venv/
+node_modules/
+*.mp4
+*.mov
+*.MOV
+*.wav
+*.jpg
+*.png
+work/r/
+work/ft/
+work/ph/
+work/qa/
+work/dl/
+edit/
+gfx/compositions/
