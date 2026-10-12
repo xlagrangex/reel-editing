@@ -73,7 +73,7 @@ Queste regole vengono da sei round di feedback reali su un reel montato in codic
 - **Soldi = la notifica di vendita di Shopify** ("cha-ching"), già inclusa nel template in `sfx/soldi.wav`: prima occorrenza tagliata dal video YouTube `CJGCkTWnDG8`, 1,4 s. Non una cassa generica.
 - **Dove il suono non è stato deciso: silenzio**. Niente suono inventato al suo posto.
 - **Restano in sintesi** solo i suoni d'interfaccia discreti: click, pop, whoosh a metà di uno whip, tasti, tick, rulli che si fermano.
-- **Musica**: -27 LUFS sotto la voce. Se l'utente dà una traccia, sostituisce il letto sintetizzato e chiude con un fade-out.
+- **Musica**: la traccia è dell'utente, generata da lui ([musica.md](musica.md)); non esiste un sottofondo condiviso. Va a -27 LUFS sotto la voce, con un fade-out finale.
 
 ## Sottotitoli
 - **Sul volto**: bianchi con un'ombra morbida ma evidente, **mai un contorno nero**, soprattutto sulle parole evidenziate. Sulle parole in gradiente al massimo un bordino bianco sottile.

@@ -4,7 +4,7 @@ Anything recognisable (a notification, a famous meme sound) is a real sample in 
   {"t": 1.2, "type": "sample", "file": "sfx/name.wav", "db": -6}   ("db" relative to the voice peak)
   {"t": 1.2, "type": "soldi"}                                        = sfx/soldi.wav at -3 dB: the Shopify sale "cha-ching"
 A sample that is missing is skipped with a warning: where no sound has been chosen, silence.
-Music: reel.json "music" (or MUSIC=<file>) replaces the synthesised bed; either way it sits at -27 LUFS.
+Music: the user's own track, reel.json "music" (or MUSIC=<file>), at -27 LUFS under the voice. There is no default bed.
 Master: -14 LUFS integrated, true peak <= -1 dBTP. Env: STEMS, MASTER."""
 import glob, json, os, re, subprocess
 import numpy as np, soundfile as sf, pyloudnorm as pyln
@@ -31,10 +31,6 @@ def bp(x, lo, hi, order=2):
 
 def lp(x, f, order=2):
     return sosfilt(butter(order, f, btype="low", fs=SR, output="sos"), x)
-
-
-def hp(x, f, order=2):
-    return sosfilt(butter(order, f, btype="high", fs=SR, output="sos"), x)
 
 
 def env(n, a, d):
@@ -162,75 +158,22 @@ if SEAM > 2.8:
     r[-int(0.008 * SR):] *= np.linspace(1, 0, int(0.008 * SR))
     r = norm_peak(r, VPK * db(-14))
     riser = np.zeros(N); a = int(round((SEAM - RD) * SR)); riser[a:a + n] = r[: N - a]
-# ------------------------------------------------------------------ music: warm minimal electronic, 110 BPM
-BPM = 110; beat = 60 / BPM; T0 = 1 / 60
+# ------------------------------------------------------------------ music: the user's own track, never a shared default
+# Every reel made with this skill would otherwise sound the same: the track is generated (or licensed) by the user,
+# see references/musica.md. No file = no music, with a warning.
 music = np.zeros((N, 2))
-tt = np.arange(N) / SR
-
-
-def note(f):
-    return 440 * 2 ** ((f - 69) / 12)
-
-
-CH = [[53, 57, 60, 64], [57, 60, 64, 67], [50, 53, 57, 60, 64], [48, 52, 55, 59]]   # Fmaj7 Am7 Dm9 Cmaj7
-BASS = [41, 45, 38, 36]
-bar = 4 * beat
-nbars = int(np.ceil((END - T0) / bar)) + 1
-pad = np.zeros(N); bass = np.zeros(N); kick = np.zeros(N); hat = np.zeros(N); rim = np.zeros(N)
-for b in range(nbars):
-    st = T0 + b * bar
-    ch = CH[(b // 2) % 4]; i0 = int(st * SR); L = int(2 * bar * SR) if b % 2 == 0 else 0
-    if L:
-        m = min(L, N - i0)
-        if m > 0:
-            t2 = np.arange(m) / SR
-            sig = np.zeros(m)
-            for k, mn in enumerate(ch):
-                for det in (-0.06, 0.06):
-                    f = note(mn) * 2 ** (det / 12)
-                    sig += np.sin(2 * np.pi * f * t2 + k) * 0.6 + np.sin(2 * np.pi * 2 * f * t2) * 0.12
-            a = np.minimum(1, t2 / 0.6) * np.minimum(1, (L / SR - t2) / 0.5)
-            pad[i0:i0 + m] += sig * a
-    for q in range(4):
-        bt = st + q * beat; j = int(bt * SR)
-        if j >= N: break
-        m = min(int(0.4 * SR), N - j); t2 = np.arange(m) / SR
-        if q in (0, 2) or (q == 3 and b % 2 == 1):          # soft kick
-            f = 48 + 70 * np.exp(-t2 / 0.03)
-            kick[j:j + m] += np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t2 / 0.16)
-        if q in (1, 3):                                      # soft rim/clap, very low
-            mm = min(int(0.12 * SR), N - j)
-            rim[j:j + mm] += bp(rng.standard_normal(mm), 900, 2500) * np.exp(-np.arange(mm) / SR / 0.03)
-        for h in (0.5,):                                     # off-beat hat
-            jh = int((bt + h * beat) * SR)
-            if jh < N:
-                mm = min(int(0.06 * SR), N - jh)
-                hat[jh:jh + mm] += hp(rng.standard_normal(mm), 7000) * np.exp(-np.arange(mm) / SR / 0.015)
-        # bass: root on beats 1 and the "and" of 3
-        for bo in ((0.0, 1.2) if q == 0 else ((0.5, 0.9) if q == 2 else ())):
-            if not bo: continue
-        if q in (0, 2):
-            jb = int((bt + (0 if q == 0 else 0.5 * beat)) * SR); mb = min(int(beat * 1.3 * SR), N - jb)
-            if mb > 0:
-                tb = np.arange(mb) / SR; fb = note(BASS[(b // 2) % 4])
-                bass[jb:jb + mb] += (np.sin(2 * np.pi * fb * tb) + 0.25 * np.sin(2 * np.pi * 2 * fb * tb)) * np.minimum(1, tb / 0.01) * np.exp(-tb / 0.45)
-pad = lp(pad, 1400, 2) * 0.22
-bass = lp(bass, 400, 2) * 0.55
-mono = pad + bass + kick * 0.7 + rim * 0.06 + hat * 0.05
-# gentle stereo width on the pad and hats only
-side = lp(np.roll(pad, int(0.012 * SR)), 1400) * 0.25 + np.roll(hat, int(0.004 * SR)) * 0.02
-music[:, 0] = mono + side; music[:, 1] = mono - side
-music[: int(T0 * SR)] = 0
-dc = int(0.005 * SR); s0 = int(T0 * SR); music[s0:s0 + dc] *= np.linspace(0, 1, dc)[:, None]
-fo = int(0.8 * SR); music[-fo:] *= np.linspace(1, 0, fo)[:, None]
-music *= db(-27 - meter.integrated_loudness(music))
 MUSIC = os.environ.get("MUSIC") or CFG.get("music")
-if MUSIC:
+if MUSIC and os.path.exists(MUSIC):
     raw = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-i", MUSIC, "-f", "f32le", "-ac", "2", "-ar", str(SR), "-"], capture_output=True, check=True).stdout
     m = np.frombuffer(raw, np.float32).reshape(-1, 2).astype(np.float64)
-    music = np.zeros((N, 2)); L = min(N, len(m)); music[:L] = m[:L]
-    fo = int(1.2 * SR); music[-fo:] *= np.linspace(1, 0, fo)[:, None]
+    if len(m) < N:
+        print(f"WARN {MUSIC} lasts {len(m) / SR:.1f} s, the reel {END:.1f} s: the music stops early, generate a longer one")
+    L = min(N, len(m)); music[:L] = m[:L]
+    fo = min(int(1.2 * SR), L); music[L - fo:L] *= np.linspace(1, 0, fo)[:, None]
     music *= db(-27 - meter.integrated_loudness(music))
+else:
+    why = f"{MUSIC} not found" if MUSIC else 'reel.json "music" is empty'
+    print(f"WARN no music ({why}): generate your own track, see references/musica.md")
 
 st = lambda m: np.stack([m, m], 1)
 sf.write(STEMS + "/sfx.wav", st(sfx), SR, subtype="PCM_24")

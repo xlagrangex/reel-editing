@@ -60,7 +60,7 @@ Le misure qui sotto vengono da una reference a 30 fps di un creator del genere. 
 | 10 | `render.sh` | `hyperframes@0.8.143 render --fps 240`, poi `tmix=frames=3,fps=60`: è il motion blur. Overlay `--format mov -w 1` (ProRes 4444 in streaming). `webm` con alfa = cattura PNG su disco (decine di GB), da evitare |
 | 11 | `compose.py` | Vedi §3 |
 | 12 | `subs.py` | Blocchi da 1-3 parole; regole in `reel.json` `subs` |
-| 13 | `audio.py` | Eventi sfx dal JSON `<script id="sfx">` di ogni composizione. Riser di 2,6 s che finisce sulla giunzione del gancio. Musica a -27 LUFS. Master -14 LUFS, TP ≤ -1 dBTP |
+| 13 | `audio.py` | Eventi sfx dal JSON `<script id="sfx">` di ogni composizione. Riser di 2,6 s che finisce sulla giunzione del gancio. Musica dell'utente (`reel.json` `music`, vedi [musica.md](musica.md)) a -27 LUFS. Master -14 LUFS, TP ≤ -1 dBTP |
 | 14 | `burn.py` | Sottotitoli e copertina disegnati con PIL, **senza browser**: robusto anche con il Mac sotto carico, quando Chrome headless va in timeout. H.264 High crf 15, AAC 320k |
 | 15 | `qa.sh` | Foglio a 1 fps, foglio delle giunzioni (frame f-1 e f a ogni segmento), LUFS/TP per stem |
 

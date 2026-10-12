@@ -15,7 +15,8 @@ Prima di montare leggi:
 1. **Reference**: se l'utente ha un video di riferimento, scegline **uno** ed estrai **tutti** i frame in fogli 10x6. Misura layout, raggi, durate delle transizioni in frame ed easing prima di scrivere codice.
 2. **Spec incollata = autonomia totale**: niente domande dopo. Se invece manca un'informazione, segnala il buco e chiedi una cosa sola, quando serve.
 3. **Installazioni solo in locale** (`.venv`, `node_modules` del progetto), mai a livello di sistema. Se un'installazione viene rifiutata, non riprovarla.
-4. **Requisiti**: macOS su Apple Silicon (mlx-whisper; Vision per il face tracking, con lo `swift` di sistema), ffmpeg, Node 18+, Python 3.11+. Chrome serve solo per le catture di pagine, `yt-dlp` solo per i suoni veri.
+4. **Musica**: la traccia è dell'utente. La skill non ha un sottofondo di default, altrimenti tutti i reel suonerebbero uguali. Se l'utente non ce l'ha, deve generarla lui: spiegagli come con [references/musica.md](references/musica.md) e intanto monta senza.
+5. **Requisiti**: macOS su Apple Silicon (mlx-whisper; Vision per il face tracking, con lo `swift` di sistema), ffmpeg, Node 18+, Python 3.11+. Chrome serve solo per le catture di pagine, `yt-dlp` solo per i suoni veri.
 
 ## Avvio
 ```bash
@@ -40,7 +41,7 @@ Si lancia tutto dalla radice del progetto con `.venv/bin/python` (o `zsh` per gl
 | 10 | `work/render.sh [id…]` | Il foglio `work/r/<id>_sheet.jpg` di ogni grafica |
 | 11 | `work/compose.py` | `work/base.mp4`: layout e transizioni a card |
 | 12 | `work/subs.py` | Blocchi ed evidenziazioni (regole in `reel.json` `subs`) |
-| 13 | `work/audio.py` | Le righe `WARN`: un suono mancante resta silenzio |
+| 13 | `work/audio.py` | Le righe `WARN`: un suono mancante resta silenzio, e senza `music` in `reel.json` il reel non ha sottofondo |
 | 14 | `work/burn.py` | `edit/final.mp4` con sottotitoli, copertina e master audio |
 | 15 | `work/qa.sh` | Foglio a 1 fps, foglio delle giunzioni, LUFS/TP di ogni stem. Poi i frame **interi** all'inizio e alla fine di ogni push |
 
@@ -72,7 +73,7 @@ Prima del passo 9 scrivi un **trattamento**: una tabella con tempo, cosa dice, r
   - `kinetic`: segnaposto;
   - `capture_block`, `tex` / `svg`: equazioni intere in LaTeX.
 - **Render**: 240 fps, poi `tmix` a 60 fps (motion blur vero). Gli overlay vanno in ProRes 4444 con alfa. Al massimo 2-3 render in parallelo.
-- **Audio**: master -14 LUFS, TP ≤ -1 dBTP; musica a -27 LUFS sotto la voce.
+- **Audio**: master -14 LUFS, TP ≤ -1 dBTP; la musica dell'utente a -27 LUFS sotto la voce.
 
 ## Le regole che pesano di più
 1. **Mai la testa scontornata** che esce dalla card. Il corpo intero scontornato con uno sfondo dietro va bene, ogni tanto.

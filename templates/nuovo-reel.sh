@@ -9,7 +9,7 @@ DST=$1; SRC=$2
 [[ -n $DST && -n $SRC ]] || { echo "usage: zsh nuovo-reel.sh <project folder> <footage file>"; exit 1; }
 [[ -e $DST ]] && { echo "$DST exists already"; exit 1; }
 cp -R "$SKILL/progetto" "$DST"
-mkdir -p "$DST"/{work,edit/stems,sfx}
+mkdir -p "$DST"/{work,edit/stems,sfx,music}
 python3 - "$DST/reel.json" "$(cd "$(dirname "$SRC")" && pwd)/$(basename "$SRC")" <<'PY'
 import json, sys
 p, src = sys.argv[1:]
@@ -21,3 +21,4 @@ echo "install (local only):"
 echo "  cd \"$DST\" && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt"
 echo "  (cd gfx && npm install)    # MathJax for LaTeX equations"
 echo "  npm install                # puppeteer-core, only for page captures"
+echo "music: generate your own track into music/ and set reel.json \"music\" (see references/musica.md)"
