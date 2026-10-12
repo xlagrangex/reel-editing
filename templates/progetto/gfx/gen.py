@@ -144,8 +144,8 @@ def domande(sid, items, push=True):
 # ================================================================ example: the number hits the jackpot (gfx or split)
 def numero(sid, value, at, stop_at, label="", layout=None, seed=7):
     """A strong number said out loud: it lands at `at` already spinning, the digits stop one at a time and the last
-    one stops at `stop_at` (the word that says the number), then it turns to the gradient with rays behind and a push. No slot machine, no "jackpot" word. The money sound is the sample
-    sfx/soldi.wav (see SKILL.md); if the file is missing the moment stays silent."""
+    one stops at `stop_at` (the word that says the number), then it turns to the gradient with rays behind and a push.
+    No slot machine, no "jackpot" word. The money sound is the Shopify sale "cha-ching" in sfx/soldi.wav (shipped)."""
     lay = layout or SEG[sid]["layout"]
     cy = 470 if lay == "split" else 760
     size = min(176, int(900 / (0.64 * len(value))))

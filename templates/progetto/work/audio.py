@@ -2,7 +2,7 @@
 Few sounds, real ones. Synthesised here only the discreet UI sounds (click, pop, whoosh, typing, ticks, reel stop).
 Anything recognisable (a notification, a famous meme sound) is a real sample in sfx/, never re-synthesised:
   {"t": 1.2, "type": "sample", "file": "sfx/name.wav", "db": -6}   ("db" relative to the voice peak)
-  {"t": 1.2, "type": "soldi"}                                        = sfx/soldi.wav at -3 dB (money moments)
+  {"t": 1.2, "type": "soldi"}                                        = sfx/soldi.wav at -3 dB: the Shopify sale "cha-ching"
 A sample that is missing is skipped with a warning: where no sound has been chosen, silence.
 Music: reel.json "music" (or MUSIC=<file>) replaces the synthesised bed; either way it sits at -27 LUFS.
 Master: -14 LUFS integrated, true peak <= -1 dBTP. Env: STEMS, MASTER."""

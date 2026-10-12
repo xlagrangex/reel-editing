@@ -19,7 +19,7 @@ girato ──► trascrizione parola per parola ──► caccia alle balbuzie �
   - La card si espande in 10 frame e collassa in 12, con punch-in sui jump-cut. Le misure sono prese frame per frame da una reference.
 - **Anima le grafiche sulle parole**: ogni animazione cade sul tempo della parola detta. La libreria di camera ha push, step, whip, profondità di campo, catture di pagine vere con evidenziazione, contatori, GIF deterministiche ed equazioni in LaTeX.
 - **Sottotitoli**: blocchi da 1-3 parole con parole chiave in gradiente e un'ombra morbida sul volto (mai contorno nero). Più una copertina sul primo frame.
-- **Audio**: pochi suoni discreti, i campioni veri dove serve un suono riconoscibile, un riser sul gancio e la musica a -27 LUFS. Master a -14 LUFS e true peak ≤ -1 dBTP.
+- **Audio**: pochi suoni discreti, i campioni veri dove serve un suono riconoscibile (il "cha-ching" di Shopify per i soldi è già incluso), un riser sul gancio e la musica a -27 LUFS. Master a -14 LUFS e true peak ≤ -1 dBTP.
 - **QA**: foglio a 1 fps, foglio delle giunzioni, loudness di ogni traccia.
 
 La parte che conta di più non è tecnica: [`references/gusti.md`](references/gusti.md) raccoglie le regole emerse da sei round di feedback reali, cioè cosa funziona e cosa è cringe in un reel di questo tipo.
