@@ -5,6 +5,7 @@ node_modules/
 *.mov
 *.MOV
 *.wav
+!sfx/soldi.wav
 *.jpg
 *.png
 work/r/

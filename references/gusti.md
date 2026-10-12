@@ -70,7 +70,7 @@ Queste regole vengono da sei round di feedback reali su un reel montato in codic
   - buzz;
   - popper.
 - **Un suono riconoscibile si prende vero**, da una fonte reale (`work/grab_sfx.sh`): prima occorrenza pulita, verificata su un secondo upload indipendente. I siti con il CAPTCHA di Cloudflare non si superano: si cerca un'altra fonte. Verifica di poter usare il suono.
-- **Soldi = la notifica di vendita di Shopify** ("cha-ching"), messa in `sfx/soldi.wav`. Non una cassa generica.
+- **Soldi = la notifica di vendita di Shopify** ("cha-ching"), già inclusa nel template in `sfx/soldi.wav`: prima occorrenza tagliata dal video YouTube `CJGCkTWnDG8`, 1,4 s. Non una cassa generica.
 - **Dove il suono non è stato deciso: silenzio**. Niente suono inventato al suo posto.
 - **Restano in sintesi** solo i suoni d'interfaccia discreti: click, pop, whoosh a metà di uno whip, tasti, tick, rulli che si fermano.
 - **Musica**: -27 LUFS sotto la voce. Se l'utente dà una traccia, sostituisce il letto sintetizzato e chiude con un fade-out.

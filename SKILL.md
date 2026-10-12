@@ -79,7 +79,7 @@ Prima del passo 9 scrivi un **trattamento**: una tabella con tempo, cosa dice, r
 2. **Ogni grafica si capisce al volo**: oggetti riconoscibili, non astrazioni. Il letterale va bene solo in alcuni punti; altrove serve un **riferimento esterno preciso** (fatto storico, logo vero, immagine vera, cultura pop).
 3. **Un numero forte detto a voce è un momento visivo**: zoom o "jackpot" sul numero stesso, sincronizzato alla parola. Mai slot machine o la scritta "JACKPOT".
 4. **Un push non taglia mai l'informazione**: controlla il frame intero a inizio e fine.
-5. **Pochi suoni, ma veri**: un suono riconoscibile si prende vero (`work/grab_sfx.sh`), non si rifà in sintesi. Dove il suono non è deciso, silenzio. Per i soldi, la notifica di vendita di Shopify.
+5. **Pochi suoni, ma veri**: un suono riconoscibile si prende vero (`work/grab_sfx.sh`), non si rifà in sintesi. Dove il suono non è deciso, silenzio. Per i soldi, la notifica di vendita di Shopify, già inclusa in `sfx/soldi.wav`.
 6. **Sottotitoli sul volto**: ombra morbida ma evidente, mai contorno nero.
 7. **Zero balbuzie, zero passaggi di senso persi**: si rilegge il montato, non solo i tagli.
 8. **Fatti**:
