@@ -74,6 +74,7 @@ Prima del passo 9 scrivi un **trattamento**: una tabella con tempo, cosa dice, r
   - `capture_block`, `tex` / `svg`: equazioni intere in LaTeX.
 - **Render**: 240 fps, poi `tmix` a 60 fps (motion blur vero). Gli overlay vanno in ProRes 4444 con alfa. Al massimo 2-3 render in parallelo.
 - **Audio**: master -14 LUFS, TP ≤ -1 dBTP; la musica dell'utente a -27 LUFS sotto la voce.
+- **Stop drammatico**: `reel.json` `"stops": [{"from": "<prima parole della frase>", "until": "<segmento dopo>"}]`. Musica ferma e volto in bianco e nero dalla frase al segmento dopo. È ancorato alle parole del montato, non ai secondi, quindi regge se cambiano i tagli prima. Quando usarlo: [gusti.md](references/gusti.md).
 
 ## Le regole che pesano di più
 1. **Mai la testa scontornata** che esce dalla card. Il corpo intero scontornato con uno sfondo dietro va bene, ogni tanto.

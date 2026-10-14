@@ -21,6 +21,7 @@ Queste regole vengono da sei round di feedback reali su un reel montato in codic
   - grafiche: tagli secchi;
   - punch-in ~110% sui cambi frase.
 - **Volto pieno non vuol dire niente grafica**. Sul volto pieno vanno anche overlay leggeri: chip, sticker, lo screenshot della pagina citata. Non occupano mezzo schermo, lasciano libera la faccia e sono il terzo tipo di scena accanto a split e grafica piena.
+- **Stop drammatico sulla concessione**. Quando il creator concede un punto subito prima del ribaltamento ("e ti darei anche ragione", poi "Eppure…"), la musica si ferma netta e il volto va in bianco e nero. Sul taglio della frase dopo tornano il colore e la musica, che riprende da dove si era fermata. Al posto della musica non va nessun suono. Funziona perché è raro: uno per video, sul ribaltamento principale. Si attiva in `reel.json`: `"stops": [{"from": "e ti darei", "until": "S03"}]`.
 - **Arrotondamenti fissi**: card 32, tile 72, doc 40, cornice delle catture 36, copertina 30. Un cambio di stile cambia i colori, non i raggi.
 
 ## Grafiche: fare il direttore creativo

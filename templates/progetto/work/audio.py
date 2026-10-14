@@ -9,7 +9,7 @@ Master: -14 LUFS integrated, true peak <= -1 dBTP. Env: STEMS, MASTER."""
 import glob, json, os, re, subprocess
 import numpy as np, soundfile as sf, pyloudnorm as pyln
 from scipy.signal import butter, sosfilt, resample_poly
-from common import CFG
+from common import CFG, stop_windows
 
 SR = 48000
 P = json.load(open("work/plan.json"))
@@ -166,6 +166,12 @@ MUSIC = os.environ.get("MUSIC") or CFG.get("music")
 if MUSIC and os.path.exists(MUSIC):
     raw = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-i", MUSIC, "-f", "f32le", "-ac", "2", "-ar", str(SR), "-"], capture_output=True, check=True).stdout
     m = np.frombuffer(raw, np.float32).reshape(-1, 2).astype(np.float64)
+    # reel.json "stops": the music halts on the phrase (30 ms ramp, no click) and picks up where it stopped at the next segment
+    rp = int(0.03 * SR)
+    for t0, t1 in stop_windows():
+        a, b = int(round(t0 * SR)), int(round(t1 * SR))
+        m = m.copy(); m[a - rp:a] *= np.linspace(1, 0, rp)[:, None]; m[a:a + rp] *= np.linspace(0, 1, rp)[:, None]
+        m = np.concatenate([m[:a], np.zeros((b - a, 2)), m[a:]])
     if len(m) < N:
         print(f"WARN {MUSIC} lasts {len(m) / SR:.1f} s, the reel {END:.1f} s: the music stops early, generate a longer one")
     L = min(N, len(m)); music[:L] = m[:L]

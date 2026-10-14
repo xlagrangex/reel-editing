@@ -30,3 +30,24 @@ def whisper(wav, out_json=None, prompt=None, offset=0.0):
 
 def ffmpeg(*args):
     subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-y", *args], check=True)
+
+
+def stop_windows():
+    """reel.json "stops": [{"from": "e ti darei", "until": "S03"}] -> [(t0, t1)] in timeline seconds.
+    A stop is a dramatic beat: from the first word of the phrase to the start of that segment the music pauses and the picture
+    turns black and white. Anchored on words, not seconds, so it follows any later change to the cuts."""
+    stops = CFG.get("stops", [])
+    if not stops:
+        return []
+    norm = lambda s: "".join(c for c in s.lower() if c.isalnum() or c in " '")
+    words = [norm(w["w"]) for w in json.load(open("work/tl_words.json"))]
+    times = [w["t0"] for w in json.load(open("work/tl_words.json"))]
+    seg = {s["id"]: s["t0"] for s in json.load(open("work/plan.json"))["segments"]}
+    out = []
+    for s in stops:
+        ph = norm(s["from"]).split()
+        hits = [i for i in range(len(words) - len(ph) + 1) if words[i:i + len(ph)] == ph]
+        if len(hits) != 1:
+            raise SystemExit(f'stop "{s["from"]}": found {len(hits)} times in the cut, it must be once')
+        out.append((times[hits[0]], seg[s["until"]]))
+    return out

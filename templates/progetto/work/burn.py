@@ -2,12 +2,13 @@
 -> edit/final.mp4. Theme: Plus Jakarta Sans ExtraBold, tight; navy ink on the white panel and graphics; on the footage
 white with a soft, evident shadow (never a black outline), highlight words in the blue gradient with a thin white rim.
 Each block settles in from 0.92 to 1.0 scale over 0.1 s.
+reel.json "stops": black and white from the phrase to the next segment (the music pauses there too, audio.py).
 Env: BASE, MASTER, OUT; DARK="S04,S07@5.0" = footage-style subtitles on graphic segments shot on a photo
 ("@5.0" = only blocks starting in the first 5.0 s of that segment)."""
 import json, os, subprocess
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
-from common import CFG
+from common import CFG, stop_windows
 
 W, H, FPS = 1080, 1920, 60
 FONT = "gfx/assets/fonts/PlusJakartaSans-800-latin.woff2"
@@ -152,6 +153,7 @@ def main():
         f0, f1 = int(round(b["a"] * FPS)), int(round(b["b"] * FPS))
         imgs.append((f0, f1, block_image(b["text"], b["hl"], is_dark(b)), CY[b["layout"]]))
     cover = cover_image()
+    bw = [(int(round(t0 * FPS)), int(round(t1 * FPS))) for t0, t1 in stop_windows()]
     src = subprocess.Popen(["ffmpeg", "-nostdin", "-v", "error", "-i", BASE, "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
     out = subprocess.Popen(["ffmpeg", "-nostdin", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
                             "-i", MASTER, "-map", "0:v", "-map", "1:a", "-frames:v", str(END),
@@ -165,6 +167,9 @@ def main():
         if len(buf) < n:
             break
         fr = np.frombuffer(buf, np.uint8).reshape(H, W, 3).copy()
+        if any(a <= f < b for a, b in bw):
+            y = fr.astype(np.float32) @ np.array([0.2126, 0.7152, 0.0722], np.float32)      # Rec.709 luma
+            fr[:] = np.clip((y - 128) * 1.08 + 128, 0, 255).astype(np.uint8)[:, :, None]    # a touch of contrast
         if f == 0:
             paste(fr, cover, W / 2, H / 2)
         while k < len(imgs) and imgs[k][1] <= f:
