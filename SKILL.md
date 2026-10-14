@@ -43,7 +43,7 @@ Si lancia tutto dalla radice del progetto con `.venv/bin/python` (o `zsh` per gl
 | 12 | `work/subs.py` | Blocchi ed evidenziazioni (regole in `reel.json` `subs`) |
 | 13 | `work/audio.py` | Le righe `WARN`: un suono mancante resta silenzio, e senza `music` in `reel.json` il reel non ha sottofondo |
 | 14 | `work/burn.py` | `edit/final.mp4` con sottotitoli, copertina e master audio |
-| 15 | `work/qa.sh` | Foglio a 1 fps, foglio delle giunzioni, LUFS/TP di ogni stem. Poi i frame **interi** all'inizio e alla fine di ogni push |
+| 15 | `work/qa.sh` | Foglio a 1 fps, foglio delle giunzioni, LUFS/TP di ogni stem, `SYNC OK` del volto contro la voce. Poi i frame **interi** all'inizio e alla fine di ogni push |
 
 Dopo una modifica alle grafiche o a `reel.json`, `zsh work/build.sh [id…]` rifà i passi 9-15.
 
@@ -98,7 +98,7 @@ Prima del passo 9 scrivi un **trattamento**: una tabella con tempo, cosa dice, r
 | L'evidenziazione su una pagina catturata è vuota | La mark cade sotto un paywall nascosto: guarda il frame renderizzato |
 | Un oggetto compare prima del suo momento (monete fuori campo che fanno ombra sul bordo, scintille già visibili) | Un `fromTo` con `opacity: 1` nello stato iniziale lo applica dal frame 0 (`immediateRender`). Su ogni `fromTo` che parte dopo lo 0 aggiungi `immediateRender: false` |
 | Un segmento grafico parte su un fondo bianco vuoto | Dopo un taglio secco, 0,3-0,5 s di vuoto si vedono come un lampo: il contenuto deve comparire entro ~0,1 s. Un numero che si ferma sulla parola può entrare già in rotazione |
-| Da un certo punto in poi il volto è fuori sync con la voce, fino alla fine | Hai cambiato gli span e rifatto voce e sottotitoli, ma non `work/cam.mp4` (`build_cam.py`) né il tracking (`faces.sh`). Rifalli, poi `compose.py`. Il QA del sync confronta immagine e voce (una vocale aperta vicino alla fine, contro il frame sorgente della stessa parola), non voce contro voce |
+| Da un certo punto in poi il volto è fuori sync con la voce, fino alla fine | Hai cambiato gli span e rifatto voce e sottotitoli, ma non `work/cam.mp4` (`build_cam.py`) né il tracking (`faces.sh`). Rifalli, poi `compose.py`. `work/synccheck.py` (dentro `qa.sh`) confronta il volto nel finale con il frame sorgente della stessa parola: un controllo voce contro voce non lo vede |
 | GSAP scatta sui filtri | Filtro base esplicito in CSS (`blur(0px) brightness(1)`), mai interpolare da `none` |
 | L'utente indica un suono "al secondo X" che lì non c'è | I timestamp a orecchio sbagliano di 1-2 s: elenca gli eventi (`edit/stems/sfx_events.json`), misura l'RMS di ogni stem nella finestra e prendi quello che si sente davvero |
 | Il loop di shell si ferma dopo il primo giro | ffmpeg/npx dentro un `while read`: aggiungi `-nostdin` / `< /dev/null` |

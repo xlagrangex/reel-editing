@@ -17,3 +17,6 @@ print("junctions:", len(fs) // 2, "cuts")
 PY
 zsh work/meas.sh edit/stems/*.wav "$OUT"
 echo "sheets: work/qa/sheet.jpg work/qa/junctions.jpg"
+# picture against voice: the face on screen must be the source frame of the word being heard (comparing voice with voice misses a stale cam.mp4)
+PY=.venv/bin/python; [[ -x $PY ]] || PY=python3
+$PY work/synccheck.py "$OUT"
