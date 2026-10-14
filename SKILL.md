@@ -31,7 +31,7 @@ Si lancia tutto dalla radice del progetto con `.venv/bin/python` (o `zsh` per gl
 |---|---|---|
 | 1 | `work/transcribe.py` | Le righe `UNCOVERED`: Whisper salta pezzi interi, vanno ritrascritti con il passo 2 |
 | 2 | `work/phwords.py ID:inizio-fine …` | Riempitivi, false partenze e ripetizioni con i loro tempi: restano **fuori** dagli span |
-| 3 | `work/cut.py` | Gli span vengono da `reel.json` `spans`. Per ogni attacco c'è il profilo RMS: non deve partire sulla coda di una parola scartata |
+| 3 | `work/cut.py` | Gli span vengono da `reel.json` `spans`. Per ogni attacco c'è il profilo RMS: non deve partire sulla coda di una parola scartata. Se cambi gli span, rifai **tutti** i passi da 4 a 8: `compose.py` si ferma se camera o tracking sono rimasti indietro |
 | 4 | `work/voice.py` | Voce a -14 LUFS, J-cut di 50 ms |
 | 5 | `work/retranscribe.py` | Rileggi **tutto** il testo del montato. Le righe `SHORT PIECE` e `LONG WORD` sono ripetizioni che Whisper ha collassato |
 | 6 | `work/build_cam.py` | Camera con tagli a frame esatto |
@@ -98,6 +98,7 @@ Prima del passo 9 scrivi un **trattamento**: una tabella con tempo, cosa dice, r
 | L'evidenziazione su una pagina catturata è vuota | La mark cade sotto un paywall nascosto: guarda il frame renderizzato |
 | Un oggetto compare prima del suo momento (monete fuori campo che fanno ombra sul bordo, scintille già visibili) | Un `fromTo` con `opacity: 1` nello stato iniziale lo applica dal frame 0 (`immediateRender`). Su ogni `fromTo` che parte dopo lo 0 aggiungi `immediateRender: false` |
 | Un segmento grafico parte su un fondo bianco vuoto | Dopo un taglio secco, 0,3-0,5 s di vuoto si vedono come un lampo: il contenuto deve comparire entro ~0,1 s. Un numero che si ferma sulla parola può entrare già in rotazione |
+| Da un certo punto in poi il volto è fuori sync con la voce, fino alla fine | Hai cambiato gli span e rifatto voce e sottotitoli, ma non `work/cam.mp4` (`build_cam.py`) né il tracking (`faces.sh`). Rifalli, poi `compose.py`. Il QA del sync confronta immagine e voce (una vocale aperta vicino alla fine, contro il frame sorgente della stessa parola), non voce contro voce |
 | GSAP scatta sui filtri | Filtro base esplicito in CSS (`blur(0px) brightness(1)`), mai interpolare da `none` |
 | L'utente indica un suono "al secondo X" che lì non c'è | I timestamp a orecchio sbagliano di 1-2 s: elenca gli eventi (`edit/stems/sfx_events.json`), misura l'RMS di ogni stem nella finestra e prendi quello che si sente davvero |
 | Il loop di shell si ferma dopo il primo giro | ffmpeg/npx dentro un `while read`: aggiungi `-nostdin` / `< /dev/null` |

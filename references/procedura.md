@@ -124,3 +124,4 @@ Un girato già in primo piano vuole una scala nello split di ~1.0-1.1, altriment
   - usa `--port` se la 3002 è occupata;
   - mostra una scena alla volta.
 - **Render lunghi**: tieni sveglio il Mac.
+- **Cambio di span = catena intera**: `cut.py` → `voice.py` → `build_cam.py` → `faces.sh` → `plan.py` → `subs.py` → `compose.py`. Se salti `build_cam.py` e `faces.sh`, dal primo taglio cambiato in poi il volto resta indietro (o avanti) rispetto alla voce, fino alla fine. `compose.py` controlla date e numero di frame e si ferma.

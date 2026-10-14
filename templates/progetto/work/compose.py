@@ -70,7 +70,20 @@ def transform(s, F, target, top):
     return s, dx, dy
 
 
+def check_inputs():
+    # cam.mp4 and faces.txt are built from cuts.json: a stale copy slides the face against the voice after the first changed cut
+    for p in ("work/cam.mp4", "work/ft/faces.txt"):
+        if os.path.getmtime(p) < os.path.getmtime("work/cuts.json"):
+            raise SystemExit(f"{p} is older than work/cuts.json: run work/build_cam.py, then work/faces.sh")
+    n = int(subprocess.run(["ffprobe", "-v", "error", "-count_packets", "-select_streams", "v:0", "-show_entries", "stream=nb_read_packets",
+                            "-of", "csv=p=0", "work/cam.mp4"], capture_output=True, text=True, check=True).stdout.strip())
+    last = max((int(l.split()[0][:5]) - 1) * 4 for l in open("work/ft/faces.txt") if l.strip())
+    if n != END or not END - 8 < last < END:
+        raise SystemExit(f"cam.mp4 has {n} frames, faces.txt ends at frame {last}, plan has {END}: run work/build_cam.py, then work/faces.sh")
+
+
 def main():
+    check_inputs()
     face = face_track()
     cam = reader("work/cam.mp4")
     out = subprocess.Popen(["ffmpeg", "-nostdin", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", "60", "-i", "-",
