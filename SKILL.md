@@ -77,12 +77,12 @@ Prima del passo 9 scrivi un **trattamento**: una tabella con tempo, cosa dice, r
 
 ## Le regole che pesano di più
 1. **Mai la testa scontornata** che esce dalla card. Il corpo intero scontornato con uno sfondo dietro va bene, ogni tanto.
-2. **Ogni grafica si capisce al volo**: oggetti riconoscibili, non astrazioni. Il letterale va bene solo in alcuni punti; altrove serve un **riferimento esterno preciso** (fatto storico, logo vero, immagine vera, cultura pop).
+2. **Ogni grafica si capisce al volo**: oggetti riconoscibili, non astrazioni. Il letterale va bene solo in alcuni punti; altrove serve un **riferimento esterno preciso** (fatto storico, logo vero, immagine vera, cultura pop). Il riferimento però deve spiegarsi da solo nel contesto: se per capirlo serve una frase che il creator non dice, si torna al letterale. Esempio bocciato: Oppenheimer su "l'azienda che avverte dei rischi è quella che costruisce l'AI".
 3. **Un numero forte detto a voce è un momento visivo**: zoom o "jackpot" sul numero stesso, sincronizzato alla parola. Mai slot machine o la scritta "JACKPOT".
 4. **Un push non taglia mai l'informazione**: controlla il frame intero a inizio e fine.
 5. **Pochi suoni, ma veri**: un suono riconoscibile si prende vero (`work/grab_sfx.sh`), non si rifà in sintesi. Dove il suono non è deciso, silenzio. Per i soldi, la notifica di vendita di Shopify, già inclusa in `sfx/soldi.wav`.
 6. **Sottotitoli sul volto**: ombra morbida ma evidente, mai contorno nero.
-7. **Zero balbuzie, zero passaggi di senso persi**: si rilegge il montato, non solo i tagli.
+7. **Zero balbuzie, zero passaggi di senso persi**: si rilegge il montato, non solo i tagli. Sono ripetizioni anche i **doppioni di concetto** detti con parole diverse a pochi secondi di distanza ("tutte le aziende AI, americane e cinesi", poi "chiede di rallentare a OpenAI e alle aziende cinesi"): se ne tiene uno, di solito il più concreto.
 8. **Fatti**:
    - quelli esterni si verificano e si citano;
    - i numeri sull'attività del creator sono suoi, mai cercati fuori;
@@ -96,6 +96,8 @@ Prima del passo 9 scrivi un **trattamento**: una tabella con tempo, cosa dice, r
 | `JavaScript heap out of memory` o `Navigation timeout of 60000 ms` | Troppi render insieme: rilancia quel segmento da solo, con `WORKERS=4` |
 | Lo Studio di HyperFrames ha rotto il generatore | `hyperframes preview` aggiunge `data-hf-id` ai file. Pulisci con `sed -E 's/ data-hf-id="[^"]*"//g'`, usa `--port` e chiudilo quando non serve. Lo Studio mostra una scena alla volta: il reel intero esiste solo come `edit/final.mp4` |
 | L'evidenziazione su una pagina catturata è vuota | La mark cade sotto un paywall nascosto: guarda il frame renderizzato |
+| Un oggetto compare prima del suo momento (monete fuori campo che fanno ombra sul bordo, scintille già visibili) | Un `fromTo` con `opacity: 1` nello stato iniziale lo applica dal frame 0 (`immediateRender`). Su ogni `fromTo` che parte dopo lo 0 aggiungi `immediateRender: false` |
+| Un segmento grafico parte su un fondo bianco vuoto | Dopo un taglio secco, 0,3-0,5 s di vuoto si vedono come un lampo: il contenuto deve comparire entro ~0,1 s. Un numero che si ferma sulla parola può entrare già in rotazione |
 | GSAP scatta sui filtri | Filtro base esplicito in CSS (`blur(0px) brightness(1)`), mai interpolare da `none` |
 | L'utente indica un suono "al secondo X" che lì non c'è | I timestamp a orecchio sbagliano di 1-2 s: elenca gli eventi (`edit/stems/sfx_events.json`), misura l'RMS di ogni stem nella finestra e prendi quello che si sente davvero |
 | Il loop di shell si ferma dopo il primo giro | ffmpeg/npx dentro un `while read`: aggiungi `-nostdin` / `< /dev/null` |
